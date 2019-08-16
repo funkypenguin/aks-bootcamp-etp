@@ -11,10 +11,10 @@ pool:
 #   -> create github pat here: https://github.com/settings/tokens
 #   -> Create environment variable in dev.azure.com under pipelines -> edit (right top) -> variables (right top triple dots) -> called github_pat -> click the lock
 variables:
-  gh_user: funkypenguin
+  gh_user: funkypenguin-jx-bot
   gh_repo: aks-bootcamp-etp
   gh_pass: $(github_pat)
-  gh_email: davidy@funkypenguin.co.nz
+  gh_email: jenkinsx@funkypenguin.co.nz
   gh_auth_header: $(echo -n "${gh_user}:$(github_pat)" | base64);
 
 steps:
