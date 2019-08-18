@@ -65,6 +65,7 @@ steps:
     cp -R $(Build.StagingDirectory)/.git /tmp/build;
     rm -rf $(Build.StagingDirectory)/*;
     cp -R /tmp/build/* $(Build.StagingDirectory);
+    ls -la /tmp/build
   workingDirectory: /tmp/build
   displayName: '[Script] Remove all files in $(Build.StagingDirectory) except .git/ and add files from /tmp/build'
 
