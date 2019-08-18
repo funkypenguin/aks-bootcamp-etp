@@ -71,7 +71,7 @@ steps:
 # 3. Create our commit, merge into master, delete draft branch and push it
 - script: |
     git add --all;
-    git commit -m"Pipelines-Bot: Updated site via $(Build.SourceVersion)";
+    git commit -m "Pipelines-Bot: Updated site via $(Build.SourceVersion)";
   workingDirectory: $(Build.StagingDirectory)
   displayName: '[Git] Creating commit'
 
