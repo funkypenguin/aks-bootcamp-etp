@@ -12,7 +12,7 @@ pool:
 #   -> Create environment variable in dev.azure.com under pipelines -> edit (right top) -> variables (right top triple dots) -> called github_pat -> click the lock
 variables:
   gh_user: funkypenguin-jx-bot
-  gh_repo: aks-bootcamp-etp
+  gh_repo: funkypenguin/aks-bootcamp-etp
   gh_pass: $(github_pat)
   gh_email: jenkinsx@funkypenguin.co.nz
   gh_auth_header: $(echo -n "${gh_user}:$(github_pat)" | base64);
@@ -23,7 +23,7 @@ steps:
   persistCredentials: false # We disallow setting the persisting, since we want to have a verified push which requires a PAT token
 
 # 1. Setup our local repository and branch that we can work on
-- script: git clone https://$(github_pat)@github.com/$(gh_user)/$(gh_repo).git .
+- script: git clone https://$(github_pat)@github.com/$(gh_repo).git .
   workingDirectory: $(Build.StagingDirectory)
   displayName: "[Git] Clone GitHub Pages Repository"
 
@@ -94,7 +94,7 @@ steps:
 #   displayName: '[GitHub] Trigger Page Build'
 
 - script: |
-    curl https://api.github.com/repos/$(gh_user)/$(gh_repo)/pages/builds/latest -i -v \
+    curl https://api.github.com/repos/$(gh_repo)/pages/builds/latest -i -v \
     -X GET \
     -H "Accept: application/vnd.github.mister-fantastic-preview+json" \
     -H "Authorization: Basic $(gh_auth_header)"
