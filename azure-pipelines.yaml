@@ -65,12 +65,13 @@ steps:
     cp -R $(Build.StagingDirectory)/.git /tmp/build;
     rm -rf $(Build.StagingDirectory)/*;
     cp -R /tmp/build/* $(Build.StagingDirectory);
-    ls -la $(Build.StagingDirectory);
   workingDirectory: /tmp/build
   displayName: '[Script] Remove all files in $(Build.StagingDirectory) except .git/ and add files from /tmp/build'
 
 # 3. Create our commit, merge into master, delete draft branch and push it
 - script: |
+    ls -la;
+    git diff;
     git add --all;
     git commit -m "Pipelines-Bot: Updated site via $(Build.SourceVersion)";
   workingDirectory: $(Build.StagingDirectory)
