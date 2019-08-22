@@ -59,7 +59,11 @@ steps:
 - script: |
     mkdir /tmp/build;
     ./marp -I /tmp/source -o /tmp/build;
-  displayName: '[MARP] Build Jekyll Static Site from /tmp/source to /tmp/build'
+  displayName: '[MARP] Build HTML from /tmp/source to /tmp/build'
+
+- script: |
+    cp -r /tmp/source/assets /tmp/build/;
+  displayName: '[MARP] Copy assets from /tmp/source to /tmp/build'
 
 - script: |
     cp -R $(Build.StagingDirectory)/.git /tmp/build;
