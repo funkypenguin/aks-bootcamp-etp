@@ -144,3 +144,110 @@ https://www.cncf.io/the-childrens-illustrated-guide-to-kubernetes/
 
 ![](assets/images/session1/page12.png)
 
+---
+
+# But wait.. 
+
+![](assets/images/session1/but-wait-theres-more.jpg)
+
+---
+# Fun at the Zoo
+
+![](assets/images/session1/phippy-goes-to-the-zoo-01-1.png)
+
+---
+# Pods
+
+![](assets/images/session1/phippy-goes-to-the-zoo-04-1.png)
+
+---
+# Pods
+
+![](assets/images/session1/phippy-goes-to-the-zoo-05.png)
+
+---
+# ReplicaSets
+
+![](assets/images/session1/phippy-goes-to-the-zoo-06-1.png)
+
+---
+# ReplicaSets
+
+![](assets/images/session1/phippy-goes-to-the-zoo-21.png)
+
+---
+# Secrets
+
+![](assets/images/session1/phippy-goes-to-the-zoo-08.png)
+
+---
+# Secrets
+
+![](assets/images/session1/phippy-goes-to-the-zoo-09.png)
+
+---
+# Deployments
+
+![](assets/images/session1/phippy-goes-to-the-zoo-10-1.png)
+
+---
+# Deployments
+
+![](assets/images/session1/phippy-goes-to-the-zoo-11.png)
+
+---
+# DaemonSets
+
+![](assets/images/session1/phippy-goes-to-the-zoo-12-1.png)
+
+---
+# DaemonSets
+
+![](assets/images/session1/phippy-goes-to-the-zoo-13-1.png)
+
+---
+# Ingresses
+
+![](assets/images/session1/Phippy-Goes-to-the-Zoo-age-14.png)
+
+---
+# Ingresses
+
+![](assets/images/session1/phippy-goes-to-the-zoo-15-1.png)
+
+---
+# CronJobs
+
+![](assets/images/session1/phippy-goes-to-the-zoo-16-1.png)
+
+---
+# CronJobs
+
+![](assets/images/session1/phippy-goes-to-the-zoo-17-1.png)
+
+---
+# CRDs
+
+![](assets/images/session1/phippy-goes-to-the-zoo-18-1.png)
+
+---
+# CRDs
+
+![](assets/images/session1/phippy-goes-to-the-zoo-19-1.png)
+
+---
+# The End
+
+![](assets/images/session1/phippy-goes-to-the-zoo-21-1.png)
+
+
+
+
+
+
+
+
+
+
+
+
