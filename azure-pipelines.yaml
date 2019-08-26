@@ -26,13 +26,9 @@ steps:
 
 - script: |
     mkdir html;
-    ./marp -I /tmp/source -o /tmp/build;
-  displayName: '[MARP] Build HTML from /tmp/source to /tmp/build'
-
-- script: |
-    cp -r /tmp/source/assets /tmp/build/;
-  displayName: '[MARP] Copy assets from /tmp/source to /tmp/build'
-
+    ./marp -I $(system.defaultWorkingDirectory)/$(projectName) -o html/;
+  displayName: '[MARP] Build HTML'
+  
 - bash: docker build -f $(system.defaultWorkingDirectory)/$(projectName)/Dockerfile -t $(registryServerName)/$(imageName):$(build.buildId) $(system.defaultWorkingDirectory)/$(projectName)
   displayName: '[Docker] docker build'
 
