@@ -11,53 +11,21 @@ pool:
 #   -> create github pat here: https://github.com/settings/tokens
 #   -> Create environment variable in dev.azure.com under pipelines -> edit (right top) -> variables (right top triple dots) -> called github_pat -> click the lock
 variables:
-  gh_user: funkypenguin-jx-bot
-  gh_repo: funkypenguin/aks-bootcamp-etp
-  gh_pass: $(github_pat)
-  gh_email: jenkinsx@funkypenguin.co.nz
-  gh_auth_header: $(echo -n "${gh_user}:$(github_pat)" | base64);
+  projectName: bootcamp-slides
+  registryServerName: '$(registryName).azurecr.io'
+  imageName: '$(projectName)'
+
 
 steps:
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azdevops&tabs=schema#checkout
-- checkout: none # we are not going to sync sources, we will manually clone
-  persistCredentials: false # We disallow setting the persisting, since we want to have a verified push which requires a PAT token
-
-# 1. Setup our local repository and branch that we can work on
-- script: git clone https://$(github_pat)@github.com/$(gh_repo).git .
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: "[Git] Clone GitHub Pages Repository"
-
-- script: |
-    git config user.email $(gh_email)
-    git config user.name $(gh_user)
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: '[Git] Configure User'
-
-# 3. Build Site - We only want a HTML diff on master, so we follow this process
-#      1. Copy files from development branch to /tmp/source
-#      2. Build Jekyll on /tmp/source to /tmp/build
-#      3. Remove all files in $(Build.StagingDirectory) except .git/
-#      4. Copy everything from /tmp/build to $(Build.StagingDirectory)/
-#      5. Create the commit and push it
-- script: 'git checkout development'
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: '[Git] Switch to development branch for $(Build.StagingDirectory)'
-
-- script: 'mkdir /tmp/source; cp -R * /tmp/source; rm -rf /tmp/source/.git'
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: '[Script] Copy file from development branch to /tmp/source'
-
-- script: 'git checkout master'
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: '[Git] Switch to master branch for $(Build.StagingDirectory)'
 
 - script: |
     curl -L https://github.com/marp-team/marp-cli/releases/download/v0.12.1/marp-cli-v0.12.1-linux.tar.gz -o marp-cli.tar.gz
     tar zxfvp marp-cli.tar.gz
-  displayName: 'Install MARP CLI'
+  displayName: '[MARP] Install MARP CLI'
 
 - script: |
-    mkdir /tmp/build;
+    mkdir html;
     ./marp -I /tmp/source -o /tmp/build;
   displayName: '[MARP] Build HTML from /tmp/source to /tmp/build'
 
@@ -65,48 +33,23 @@ steps:
     cp -r /tmp/source/assets /tmp/build/;
   displayName: '[MARP] Copy assets from /tmp/source to /tmp/build'
 
-- script: |
-    cp -R $(Build.StagingDirectory)/.git /tmp/build;
-    rm -rf $(Build.StagingDirectory)/*;
-    cp -R /tmp/build/* $(Build.StagingDirectory);
-  workingDirectory: /tmp/build
-  displayName: '[Script] Remove all files in $(Build.StagingDirectory) except .git/ and add files from /tmp/build'
+- bash: docker build -f $(system.defaultWorkingDirectory)/$(projectName)/Dockerfile -t $(registryServerName)/$(imageName):$(build.buildId) $(system.defaultWorkingDirectory)/$(projectName)
+  displayName: '[Docker] docker build'
 
-# 3. Create our commit, merge into master, delete draft branch and push it
-- script: |
-    ls -la;
-    git diff;
-    git add --all;
-    git commit -m "Pipelines-Bot: Updated site via $(Build.SourceVersion)";
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: '[Git] Creating commit'
+- bash: |
+    docker login $(registryServerName) -u $(registryLogin) -p $(registryPassword)
+    docker push $(registryServerName)/$(imageName):$(build.buildId)
+  displayName: '[Docker] docker push'
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
 
-- script: |
-    git push origin master;
-  workingDirectory: $(Build.StagingDirectory)
-  displayName: '[Git] Push changes to remote'
+- task: HelmInstaller@0
+  displayName: 'Install Helm'
+  inputs:
+    helmVersion: 2.14.1
 
-# 4. Get GitHub Pages build status
-# - script: |
-#     gh_user="thebillkidy";
-#     gh_pass=$(github_pat);
-#     gh_repo="thebillkidy.github.io";
-#     auth_pass=$(echo -n "${gh_user}:$(github_pat)" | base64);
+- bash: helm package --version $(build.buildId) --destination $(build.artifactStagingDirectory) $(system.defaultWorkingDirectory)/$(projectName)/charts/$(projectName)
+  displayName: 'helm package'
 
-#     curl https://api.github.com/repos/${gh_user}/${gh_repo}/pages/builds -i -v \
-#     -X POST \
-#     -H "Accept: application/vnd.github.mister-fantastic-preview+json" \
-#     -H "Authorization: Basic ${auth_pass}"
-#   displayName: '[GitHub] Trigger Page Build'
-
-- script: |
-    curl https://api.github.com/repos/$(gh_repo)/pages/builds/latest -i -v \
-    -X GET \
-    -H "Accept: application/vnd.github.mister-fantastic-preview+json" \
-    -H "Authorization: Basic $(gh_auth_header)"
-  displayName: '[GitHub] Get Page Build Status'
-
-
-
-
-
+- bash: az acr helm push -n $(registryName) -u $(registryLogin) -p $(registryPassword) $(build.artifactStagingDirectory)/$(projectName)-$(build.buildId).tgz
+  displayName: 'az acr helm push'
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
