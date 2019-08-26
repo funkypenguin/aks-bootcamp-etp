@@ -6,22 +6,32 @@ theme: notuncover
 footer: Copyright Emerging Technology Partners 2019, All Rights Reserved
 header: Azure Kuberentes Bootcamp
 ---
-# What is Kubernetes?
+# <!-- fit -->  What is Kubernetes?
+
 ---
 
-# Srsly. What is it?
+# Evolution of Containers
+
+![](assets/images/session1/container_evolution.svg)
+
+---
+
+# So what is Kubernetes?
 
 1) Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services.
 2) It facilitates both declarative configuration and automation. 
 3) It has a large, rapidly growing ecosystem - Kubernetes services, support, and tools are widely available.
 
-> The name Kubernetes originates from Greek, meaning helmsman or pilot. Google open-sourced the Kubernetes project in 2014. Kubernetes builds upon a decade and a half of experience that Google has with running production workloads at scale, combined with best-of-breed ideas and practices from the community.
-
 ---
 
-# History
+# What is Kubernetes **NOT**
 
-![](assets/images/session1/container_evolution.svg)
+1) PaaS 
+2) CI/CD - It won't build your app or containers, or manage source control or deployments
+3) Opinionated - Many ways to achieve a result
+4) Hardware management
+5) For the weak!!! 💪
+
 
 ---
 
@@ -146,7 +156,7 @@ https://www.cncf.io/the-childrens-illustrated-guide-to-kubernetes/
 
 ---
 
-# But wait.. 
+# <!-- fit --> But wait.. 
 
 ![](assets/images/session1/but-wait-theres-more.jpg)
 
@@ -238,7 +248,7 @@ https://www.cncf.io/the-childrens-illustrated-guide-to-kubernetes/
 ---
 # The End
 
-![](assets/images/session1/phippy-goes-to-the-zoo-21-1.png)
+![](assets/images/session1/phippy-goes-to-the-zoo-20-1.png)
 
 
 
